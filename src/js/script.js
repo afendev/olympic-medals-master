@@ -62,24 +62,35 @@
 //      china.medal_bronze,
 //  )
 
-    function tratarDadosMedalhas(arrayPaises){
-        for ( let i = 0; i<arrayPaises.length; i++){
-            let pais = arrayPaises[i]
-            console.log(pais.country)
-            console.log(pais.flag_url)
-            console.log(pais.medal_gold)
-            console.log(pais.medal_silver)
-            console.log(pais.medal_bronze)
-
-            criarTemplateLinha(
-            i+1,
-            pais.country,
-            pais.flag_url,
-            pais.medal_gold,
-            pais.medal_silver,
-            pais.medal_bronze,
-            )
+ function tratarDadosMedalhas(arrayPaises){
+    let paisesOrdenados = ordenarPaises(arrayPaises)
+        for ( let i = 0; i<paisesOrdenados.length; i++){
+          let pais = paisesOrdenados[i]
+          console.log(pais.country)
+          console.log(pais.flag_url)
+          console.log(pais.medal_gold)
+          console.log(pais.medal_silver)
+          console.log(pais.medal_bronze)
+          
+        criarTemplateLinha(
+          i+1,
+          pais.country,
+          pais.flag_url,
+          pais.medal_gold,
+          pais.medal_silver,
+          pais.medal_bronze,
+        )
         }
+        
+ }
+
+    function ordenarPaises(arrayPaises){
+        let newArrayPaises = arrayPaises.map(somarTotal).sort((a,b) => b.medal_gold - a.medal_gold)
+        return newArrayPaises
+    }
+
+    function somarTotal(pais){
+        return pais
     }
     
     // FUNÇÃO QUE CRIA A COLUNA RANK
