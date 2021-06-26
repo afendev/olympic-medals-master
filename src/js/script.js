@@ -1,11 +1,30 @@
-// div -> class linha *** ok
-// div -> coluna especificar classe
-// span
-// div linha -> país + img+span
+//  const china = {
+//      country: "China",
+//      flag: "cn",
+//      flag_url: "https://www.countryflags.io/cn/flat/24.png",
+//      id: 2,
+//      medal_gold: 27,
+//      medal_silver: 23,
+//      medal_bronze: 38
+//  }
+    const urlSite = "https://kenzie-olimpiadas.herokuapp.com/paises"
+
+    fetch(urlSite)
+    .then(response => response.json())
+    .then(data => tratarDadosMedalhas(data))
+
+
 
     let quadroMedalhas = document.querySelector(".quadro-medalhas")
 
-function criarTemplateLinha(){
+    function criarTemplateLinha(
+        colocacao,
+        country,
+        flag_url,
+        medal_gold,
+        medal_silver,
+        medal_bronze
+    ){
 
     // CRIANDO LINHA DO QUADRO
     let linha = document.createElement("div")
@@ -14,12 +33,14 @@ function criarTemplateLinha(){
     linha.classList.add("linha")
     
     // COLUNA RANK
-    let colunaRank = criaColunaRank("1º")
-    let colunaCountry = criaColunaCountry("Brasil")
-    let gold   = criaMedalGold("10")
-    let silver = criaMedalSilver("10")
-    let bronze = criaMedalBronze("10")
-    let total  = criaMedalTotal("30")
+    let colunaRank = criaColunaRank(`${colocacao}º`)
+    let colunaCountry = criaColunaCountry(country, flag_url)
+    let gold   = criaMedalGold(medal_gold)
+    let silver = criaMedalSilver(medal_silver)
+    let bronze = criaMedalBronze(medal_bronze)
+    let totalMedalhas = (medal_gold + medal_silver + medal_bronze)
+    console.log(totalMedalhas)
+    let total  = criaMedalTotal(totalMedalhas)
 
     linha.appendChild(colunaRank)
     linha.appendChild(colunaCountry)
@@ -29,10 +50,37 @@ function criarTemplateLinha(){
     linha.appendChild(total)
 
     quadroMedalhas.appendChild(linha)
-    console.log(linha)
+    
 }
-criarTemplateLinha()
 
+//  criarTemplateLinha(
+//      1,
+//      china.country,
+//      china.flag_url,
+//      china.medal_gold,
+//      china.medal_silver,
+//      china.medal_bronze,
+//  )
+
+    function tratarDadosMedalhas(arrayPaises){
+        for ( let i = 0; i<arrayPaises.length; i++){
+            let pais = arrayPaises[i]
+            console.log(pais.country)
+            console.log(pais.flag_url)
+            console.log(pais.medal_gold)
+            console.log(pais.medal_silver)
+            console.log(pais.medal_bronze)
+
+            criarTemplateLinha(
+            i+1,
+            pais.country,
+            pais.flag_url,
+            pais.medal_gold,
+            pais.medal_silver,
+            pais.medal_bronze,
+            )
+        }
+    }
     
     // FUNÇÃO QUE CRIA A COLUNA RANK
     function criaColunaRank(rank) {
@@ -50,7 +98,7 @@ criarTemplateLinha()
 }
 
     // FUNÇÃO QUE CRIA A COLUNA COUNTRY
-    function criaColunaCountry(country) {
+    function criaColunaCountry(country, urlimagem) {
 
         // PRIMEIRA COLUNA DO COUNTRY
         let colunaCountry = document.createElement("div")
@@ -62,7 +110,7 @@ criarTemplateLinha()
     
         // CRIANDO IMAGEM COUNTRY
         let colunaCountryImagem = document.createElement("img")
-        colunaCountryImagem.src = "https://www.countryflags.io/br/flat/24.png"
+        colunaCountryImagem.src = urlimagem
         colunaCountryImagem.alt = country
         colunaCountry.appendChild(colunaCountryImagem)
         colunaCountry.appendChild(colunaCountryTitulo)
